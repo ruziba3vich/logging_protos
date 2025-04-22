@@ -9,6 +9,8 @@ option go_package = "genprotos/logging_service";
 
 service LoggingService {
     rpc SendLog(Log) returns (google.protobuf.Empty);
+    rpc GetLastNLogs(GetLastNLogsRequest) returns (GetLogsResponse);
+  rpc GetLogsInTimeRange(GetLogsInTimeRangeRequest) returns (GetLogsResponse);
 }
 
 message Log {
@@ -16,4 +18,21 @@ message Log {
     google.protobuf.Timestamp event_time = 2;
     string level = 3;
     string service = 4;
+}
+
+message GetLastNLogsRequest {
+    int32 n = 1;
+    string level_filter = 2;
+    string service_filter = 3;
+}
+
+message GetLogsInTimeRangeRequest {
+    google.protobuf.Timestamp start_time = 1;
+    google.protobuf.Timestamp end_time = 2;
+    string level_filter = 3;
+    string service_filter = 4;
+}
+
+message GetLogsResponse {
+    repeated Log logs = 1;
 }
